@@ -6,24 +6,37 @@ import com.microsoft.playwright.Page;
 public class CommonPage {
 
     protected Page page;
-    public Locator signIn;
     public Locator menu;
-    public Locator logout;
-    public Locator categoriesDropdown;
-    public Locator handToolsLink;
+    public Locator signIn;
+    public Locator cart;
+    public Locator home;
+    public Locator logoutBtn;
+    public Locator signInBtn;
+    public Locator contactBtn;
+
+
+
+
+
 
 
     public CommonPage(Page page) {
         this.page = page;
 
         this.signIn = page.locator("a[data-test='nav-sign-in']");
-        this.menu = page.locator("a[data-test='nav-menu']");
-        this.logout = page.locator("a[data-test='nav-sign-out']");
-        this.categoriesDropdown = page.locator("a[data-test='nav-categories']");
-        this.handToolsLink = page.locator("a[data-test='nav-hand-tools']");
+        this.cart = page.locator("a[data-test='nav-cart']");
+        this.menu = page.locator("[data-test='nav-menu']");
+        this.home = page.locator("[data-test='nav-home']");
+        this.logoutBtn = page.locator("a[data-test='nav-sign-out']");
+        this.signInBtn = page.locator("a[data-test='nav-sign-in']");
+        this.contactBtn = page.locator("a[data-test='nav-contact']");
 
 
-        }
 
-    }
 
+
+
+
+
+
+    }}
