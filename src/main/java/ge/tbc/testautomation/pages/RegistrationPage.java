@@ -1,3 +1,4 @@
+
 package ge.tbc.testautomation.pages;
 
 import com.microsoft.playwright.Locator;
@@ -17,6 +18,9 @@ public class RegistrationPage {
     public Locator email;
     public Locator password;
     public Locator registerBtn;
+    public Locator emailError;
+    public Locator passwordError;
+
 
     public RegistrationPage(Page page) {
         firstName = page.locator("#first_name");
@@ -31,5 +35,11 @@ public class RegistrationPage {
         email = page.locator("input[data-test='email']");
         password = page.locator("input[data-test='password']");
         registerBtn = page.locator("button[type='submit']");
+        emailError = page.locator("[data-test='email-error']");
+        passwordError = page.locator("[data-test='password-error']");
+
+
+
+
     }
 }

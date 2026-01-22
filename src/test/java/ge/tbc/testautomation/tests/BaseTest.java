@@ -1,6 +1,7 @@
 package ge.tbc.testautomation.tests;
 
 import com.microsoft.playwright.*;
+import ge.tbc.testautomation.pages.CommonPage;
 import ge.tbc.testautomation.steps.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -12,19 +13,16 @@ public abstract class BaseTest {
     protected BrowserContext context;
     protected Page page;
 
-    protected LoginSteps loginSteps;
-    protected RegistrationSteps registrationSteps;
-    protected DashboardSteps dashboardSteps;
-    protected FavoritesSteps favoritesSteps;
+    protected HomeSteps homeSteps;
     protected ProductSteps productSteps;
     protected CommonSteps commonSteps;
+    protected CartSteps cartSteps;
+    protected CheckoutSteps checkoutSteps;
+    protected LoginSteps loginSteps;
+    protected RegistrationSteps registrationSteps;
+    protected ForgotPasswordSteps forgotSteps;
+    protected ContactSteps contactSteps;
 
-    protected final String userEmail =
-            "testuser_" + System.currentTimeMillis() + "@gmail.com";
-    protected final String userPassword =
-            "Passw0rd!2026$MyUnique!";
-
-    protected abstract boolean isHeadless();
 
     @BeforeClass
     public void setUp() {
@@ -32,35 +30,24 @@ public abstract class BaseTest {
 
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(isHeadless())
-                        .setSlowMo(1500)
+                        .setHeadless(false)
+                        .setSlowMo(1200)
         );
 
         context = browser.newContext();
         page = context.newPage();
 
-        loginSteps = new LoginSteps(page);
-        registrationSteps = new RegistrationSteps(page);
-        dashboardSteps = new DashboardSteps(page);
-        favoritesSteps = new FavoritesSteps(page);
+        homeSteps = new HomeSteps(page);
         productSteps = new ProductSteps(page);
         commonSteps = new CommonSteps(page);
+        cartSteps = new CartSteps(page);
+        checkoutSteps = new CheckoutSteps(page);
+        loginSteps = new LoginSteps(page);
+        registrationSteps = new RegistrationSteps(page);
+        forgotSteps = new ForgotPasswordSteps(page);
+        contactSteps = new ContactSteps(page);
 
-        commonSteps.openHomePage();
 
-        loginSteps
-                .navigateToLogin()
-                .goToRegistration();
-
-        registrationSteps.fillRegistrationForm(
-                "Test",
-                "User",
-                "Georgia",
-                userEmail,
-                userPassword
-        );
-
-        loginSteps.login(userEmail, userPassword);
     }
 
     @AfterClass
