@@ -1,61 +1,55 @@
 package ge.tbc.testautomation.steps;
 
+import com.microsoft.playwright.Frame;
+import com.microsoft.playwright.FrameLocator;
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import ge.tbc.testautomation.data.Constants;
 import ge.tbc.testautomation.pages.HomePage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.AssertJUnit.assertNotNull;
 
 public class HomeSteps {
-
-    private final Page page;
+    protected Page page;
     protected HomePage homePage;
-
+    private String extractedEmail;
 
     public HomeSteps(Page page) {
         this.page = page;
         this.homePage = new HomePage(page);
     }
 
-    public HomeSteps openHomePage(String url) {
-        page.navigate(url);
+    public HomeSteps open() {
+        page.navigate(Constants.URL);
         return this;
     }
 
-    public HomeSteps verifyCatalogVisible() {
-
-        assertThat(homePage.products.first()).isVisible();
-        assertThat(homePage.sort).isVisible();
-        assertThat(homePage.pagination).isVisible();
-        assertThat(homePage.filter).isVisible();
-
+    public HomeSteps verifyShopLoaded() {
+        homePage.logo.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        assertThat(homePage.logo).isVisible();
         return this;
     }
 
-    public HomeSteps searchProduct(String productName) {
-        homePage.search.fill(productName);
-        homePage.searchBtn.click();
+    public HomeSteps getFooterEmail() {
+        Object email = page.frame("framelive").evaluate("""
+            () => document.querySelector("footer a[href^='mailto:']").textContent
+        """);
+
+        this.extractedEmail = (String) email;
+        System.out.println(Constants.MESSAGE1 + extractedEmail);
         return this;
-
-
-    }
-    public HomeSteps verifyProducts(String productName) {
-    assertThat(homePage.products.first()).isVisible();
-    assertThat(homePage.productTitle.first()).containsText(Constants.HAMMER);
-    return this;
     }
 
-    public HomeSteps applyFilter() {
-        homePage.category.click();
-        homePage.brand.click();
+    public HomeSteps verifyFooterEmail() {
+        assertNotNull(Constants.MESSAGE2, extractedEmail);
         return this;
-
     }
-    public  HomeSteps selectProduct() {
-        homePage.products.first().click();
+
+    public HomeSteps goContactUs() {
+        homePage.contactUs.click();
         return this;
-
-
     }
-
 }
+
